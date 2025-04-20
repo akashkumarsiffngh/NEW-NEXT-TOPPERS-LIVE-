@@ -1,0 +1,175 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AKASH EDU</title>
+  <style>
+    body {
+      background: #0d0d0d;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+    .stream-button {
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 20px;
+      background-color: #2ecc71;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+    .stream-button:hover {
+      background-color: #27ae60;
+    }
+    #codePopup {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1c1c1c;
+      border: 2px solid #27ae60;
+      padding: 30px;
+      border-radius: 10px;
+      z-index: 999;
+    }
+    #codePopup input {
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      width: 150px;
+      text-align: center;
+    }
+    #codePopup button {
+      margin-top: 10px;
+      font-size: 16px;
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+    .countdown {
+      font-size: 16px;
+      color: #ccc;
+      margin-top: -10px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AKASH EDU</h1>
+
+  <button id="btn1" class="stream-button">Stream 1</button>
+  <div id="cd1" class="countdown">Checking timer...</div>
+
+  <button id="btn2" class="stream-button">Stream 2</button>
+  <div id="cd2" class="countdown">Checking timer...</div>
+
+  <!-- Secret Code Popup -->
+  <div id="codePopup">
+    <p>Wait kindly at 'starting time'<br>Or contact<br><b>AKASH SINGH</b><br>Email: <i>akashkumarsinghgahiri@gmail.com</i></p>
+    <input type="text" id="secretCode" placeholder="Enter Access Code">
+    <br>
+    <button onclick="checkCode()">Submit Code</button>
+  </div>
+
+  <script>
+    alert("WELCOME TO 'AKASH EDU'");
+
+    const validCodes = ["123456", "628272", "833773", "282822"];
+    let redirectURL = "";
+
+    const stream1 = {
+      start: "16:55",
+      end: "18:30",
+      url: "https://rolexcoderz.netlify.app/playx/?url=https://d2xqn12y4qo6nr.cloudfront.net/out/v1/4dacc3cc62ed4047b817b91580e11584/index_1.m3u8&id=RolexCoderZ"
+    };
+
+    const stream2 = {
+      start: "19:55",
+      end: "21:30",
+      url: "https://rolexcoderz.netlify.app/playx/?url=https://d1kw75zcv4u98c.cloudfront.net/out/v1/287810d967cc428e9bd992002e55b72c/index_1.m3u8&id=RolexCoderZ"
+    };
+
+    function isHoliday() {
+      const today = new Date().getDay();
+      return today === 0; // Sunday only
+    }
+
+    function checkTimeRange(start, end) {
+      const now = new Date();
+      const nowMin = now.getHours() * 60 + now.getMinutes();
+      const [sh, sm] = start.split(":").map(Number);
+      const [eh, em] = end.split(":").map(Number);
+      const startMin = sh * 60 + sm;
+      const endMin = eh * 60 + em;
+      return nowMin >= startMin && nowMin <= endMin;
+    }
+
+    function showCodePopup(url) {
+      redirectURL = url;
+      document.getElementById("codePopup").style.display = "block";
+    }
+
+    function checkCode() {
+      const code = document.getElementById("secretCode").value.trim();
+      if (validCodes.includes(code)) {
+        window.location.replace(redirectURL);
+      } else {
+        alert("Invalid code. Please contact AKASH SINGH.");
+      }
+    }
+
+    function handleClick(stream) {
+      if (isHoliday()) {
+        alert("Today is a holiday. For info, contact AKASH SINGH at akashkumarsinghgahiri@gmail.com");
+        return;
+      }
+
+      if (checkTimeRange(stream.start, stream.end)) {
+        window.location.replace(stream.url);
+      } else {
+        showCodePopup(stream.url);
+      }
+    }
+
+    document.getElementById("btn1").onclick = () => handleClick(stream1);
+    document.getElementById("btn2").onclick = () => handleClick(stream2);
+
+    function updateCountdown() {
+      const now = new Date();
+
+      function getCountdown(start, end) {
+        const [sh, sm] = start.split(":").map(Number);
+        const [eh, em] = end.split(":").map(Number);
+        const nowMin = now.getHours() * 60 + now.getMinutes();
+        const startMin = sh * 60 + sm;
+        const endMin = eh * 60 + em;
+
+        if (nowMin < startMin) {
+          let mins = startMin - nowMin;
+          return `Starts in ${Math.floor(mins / 60)}h ${mins % 60}m`;
+        } else if (nowMin <= endMin) {
+          let mins = endMin - nowMin;
+          return `Ends in ${Math.floor(mins / 60)}h ${mins % 60}m`;
+        } else {
+          return "Stream ended";
+        }
+      }
+
+      document.getElementById("cd1").innerText = getCountdown(stream1.start, stream1.end);
+      document.getElementById("cd2").innerText = getCountdown(stream2.start, stream2.end);
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
