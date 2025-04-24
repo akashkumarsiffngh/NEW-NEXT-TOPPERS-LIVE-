@@ -7,7 +7,7 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #000000;
+      background-color: #f4f4f4;
       text-align: center;
     }
 
@@ -99,8 +99,19 @@
       return today === 0; // Sunday
     }
 
+    function checkTimeRange(start, end) {
+      const now = new Date();
+      const nowMin = now.getHours() * 60 + now.getMinutes();
+      const [sh, sm] = start.split(":").map(Number);
+      const [eh, em] = end.split(":").map(Number);
+      const startMin = sh * 60 + sm;
+      const endMin = eh * 60 + em;
+      return nowMin >= startMin && nowMin <= endMin;
+    }
+
     function showCodePopup(url) {
       redirectURL = url;
+      document.getElementById("secretCode").value = ""; // Clear previous input
       document.getElementById("codePopup").style.display = "block";
     }
 
@@ -118,7 +129,12 @@
         alert("Today is a holiday. For info, contact AKASH SINGH at akashkumarsinghgahiri@gmail.com");
         return;
       }
-      showCodePopup(stream.url);
+
+      if (checkTimeRange(stream.start, stream.end)) {
+        window.location.replace(stream.url);
+      } else {
+        showCodePopup(stream.url);
+      }
     }
 
     document.getElementById("btn1").onclick = () => handleClick(stream1);
