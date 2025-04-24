@@ -1,65 +1,61 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>AKASH EDU</title>
   <style>
     body {
-      background: #0d0d0d;
-      color: white;
       font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
       text-align: center;
-      padding-top: 50px;
     }
+
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 30px;
+      color: #333;
     }
+
     .stream-button {
-      padding: 15px 30px;
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
       font-size: 18px;
-      margin: 20px;
-      background-color: #2ecc71;
-      border: none;
-      border-radius: 10px;
+      cursor: pointer;
+      background-color: #007bff;
       color: white;
-      cursor: pointer;
-    }
-    .stream-button:hover {
-      background-color: #27ae60;
-    }
-    #codePopup {
-      display: none;
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #1c1c1c;
-      border: 2px solid #27ae60;
-      padding: 30px;
-      border-radius: 10px;
-      z-index: 999;
-    }
-    #codePopup input {
-      padding: 10px;
-      margin-top: 15px;
-      font-size: 16px;
-      border-radius: 5px;
       border: none;
-      width: 150px;
-      text-align: center;
+      border-radius: 5px;
     }
-    #codePopup button {
-      margin-top: 10px;
-      font-size: 16px;
-      padding: 8px 15px;
-      cursor: pointer;
-    }
+
     .countdown {
       font-size: 16px;
       color: #ccc;
       margin-top: -10px;
       margin-bottom: 30px;
+    }
+
+    #codePopup {
+      display: none;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 300px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #secretCode {
+      padding: 8px;
+      width: 80%;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    #codePopup button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -83,7 +79,7 @@
   <script>
     alert("WELCOME TO 'AKASH EDU'");
 
-    const validCodes = ["123456", "628272", "833773", "282822"];
+    const validCodes = ["2580", "628272", "833773", "282822"];
     let redirectURL = "";
 
     const stream1 = {
@@ -100,17 +96,7 @@
 
     function isHoliday() {
       const today = new Date().getDay();
-      return today === 0; // Sunday only
-    }
-
-    function checkTimeRange(start, end) {
-      const now = new Date();
-      const nowMin = now.getHours() * 60 + now.getMinutes();
-      const [sh, sm] = start.split(":").map(Number);
-      const [eh, em] = end.split(":").map(Number);
-      const startMin = sh * 60 + sm;
-      const endMin = eh * 60 + em;
-      return nowMin >= startMin && nowMin <= endMin;
+      return today === 0; // Sunday
     }
 
     function showCodePopup(url) {
@@ -121,7 +107,7 @@
     function checkCode() {
       const code = document.getElementById("secretCode").value.trim();
       if (validCodes.includes(code)) {
-        window.location.replace(aleart);
+        window.location.replace(redirectURL);
       } else {
         alert("Invalid code. Please contact AKASH SINGH.");
       }
@@ -132,12 +118,7 @@
         alert("Today is a holiday. For info, contact AKASH SINGH at akashkumarsinghgahiri@gmail.com");
         return;
       }
-
-      if (checkTimeRange(stream.start, stream.end)) {
-        window.location.replace(stream.url);
-      } else {
-        showCodePopup(stream.url);
-      }
+      showCodePopup(stream.url);
     }
 
     document.getElementById("btn1").onclick = () => handleClick(stream1);
